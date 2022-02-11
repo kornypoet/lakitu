@@ -39,7 +39,11 @@ func ManageFile(c *gin.Context) {
 	}
 	switch payload.Action {
 	case "download":
-		// stub
+		err := downloadFile()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"status": "failure", "err": err})
+			return
+		}
 		c.JSON(http.StatusOK, gin.H{"status": "success", "action": "download"})
 	case "read":
 		// stub
