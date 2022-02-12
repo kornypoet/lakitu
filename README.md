@@ -18,6 +18,11 @@ POST /v1/manage_file {"action":"download"}
 -> 429 {"err":"file download in progress","status":"failure"}
 # additional calls
 -> 500 {"err":"file already downloaded","status":"failure"}
+POST /v1/manage_file {"action":"read"}
+# before downloading
+-> 500 {"err":"file must be downloaded first","status":"failure"}
+# after downloading
+-> 200 Lorem ipsum ...
 ```
 
 ## Usage
