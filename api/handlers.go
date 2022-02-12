@@ -1,6 +1,7 @@
 package api
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -13,6 +14,22 @@ const (
 	SampleFile = "sample-data.txt"
 )
 
+func downloadAction() (err error) {
+	if !assetExists() {
+		err = downloadFile()
+		return
+	}
+	return errors.New("file already downloaded")
+}
+
+func assetExists() bool {
+	if _, err := os.Stat(fmt.Sprintf("%s/%s", AssetDir, SampleFile)); os.IsNotExist(err) {
+		return false
+	} else {
+		return true
+	}
+}
+
 func downloadFile() (err error) {
 	resp, err := http.Get(RemoteURL)
 	if err != nil {
@@ -20,8 +37,8 @@ func downloadFile() (err error) {
 	}
 	defer resp.Body.Close()
 
-	// this relies on the dir already existing
-	out, err := os.Create(fmt.Sprintf("%s/%s", AssetDir, SampleFile))
+	os.MkdirAll(AssetDir, 0700)
+	out, err := os.OpenFile(fmt.Sprintf("%s/%s", AssetDir, SampleFile), os.O_RDWR|os.O_CREATE|os.O_EXCL, 0666)
 	if err != nil {
 		return
 	}
@@ -30,4 +47,3 @@ func downloadFile() (err error) {
 	_, err = io.Copy(out, resp.Body)
 	return
 }
-
