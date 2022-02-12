@@ -13,14 +13,20 @@ type Payload struct {
 	Action string `json:"action" binding:"required,oneof=download read"`
 }
 
-func Router(debug bool) *gin.Engine {
+func Router(debug bool, logging bool) (router *gin.Engine) {
 	gin.DisableConsoleColor()
 
 	if !debug {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	router := gin.Default()
+	router = gin.New()
+	router.Use(gin.Recovery())
+
+	if logging {
+		router.Use(gin.Logger())
+	}
+
 	router.HandleMethodNotAllowed = true
 	v1 := router.Group("/v1")
 
@@ -28,7 +34,7 @@ func Router(debug bool) *gin.Engine {
 	v1.POST("/manage_file", ManageFile)
 
 	BlockDownload = make(chan bool, 1)
-	return router
+	return
 }
 
 func Ping(c *gin.Context) {

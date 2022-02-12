@@ -10,6 +10,7 @@ import (
 
 var Bind string
 var Debug bool
+var Logging bool
 var Port string
 
 var rootCmd = &cobra.Command{
@@ -27,11 +28,12 @@ func Execute() {
 func init() {
 	rootCmd.Flags().StringVarP(&Bind, "bind", "b", "localhost", "Address to bind server to")
 	rootCmd.Flags().BoolVarP(&Debug, "debug", "d", false, "Enable debug mode")
+	rootCmd.Flags().BoolVarP(&Logging, "logging", "l", true, "Enable request logs")
 	rootCmd.Flags().StringVarP(&Port, "port", "p", "8080", "Port to listen on")
 }
 
 func run(cmd *cobra.Command, args []string) {
-	router := api.Router(Debug)
+	router := api.Router(Debug, Logging)
 	address := fmt.Sprintf("%s:%s", Bind, Port)
 	router.Run(address)
 }

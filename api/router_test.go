@@ -19,7 +19,7 @@ var _ = Describe("Router", func() {
 
 	BeforeEach(func() {
 		gin.SetMode(gin.TestMode)
-		router = api.Router(true)
+		router = api.Router(true, false)
 		_ = os.Remove(api.AssetFile())
 	})
 
