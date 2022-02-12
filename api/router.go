@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -56,7 +57,10 @@ func ManageFile(c *gin.Context) {
 			c.JSON(http.StatusTooManyRequests, gin.H{"status": "failure", "err":"file download in progress"})
 		}
 	case "read":
-		// stub
-		c.JSON(http.StatusOK, gin.H{"status": "success", "action": "read"})
+		if assetExists() {
+			c.File(fmt.Sprintf("%s/%s", AssetDir, SampleFile))
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"status": "failure", "err":"file must be downloaded first"})
+		}
 	}
 }
