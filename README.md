@@ -10,9 +10,14 @@ Routes
 
 ```
 GET /v1/ping
--> pong
-POST /v1/manage_file {"action":"jackson"}
--> {"status":"success"}
+-> 200 pong
+POST /v1/manage_file {"action":"download"}
+# first api call
+-> 200 {"action":"download","status":"success"}
+# concurrent calls
+-> 429 {"err":"file download in progress","status":"failure"}
+# additional calls
+-> 500 {"err":"file already downloaded","status":"failure"}
 ```
 
 ## Usage

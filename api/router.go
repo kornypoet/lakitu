@@ -6,8 +6,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var BlockDownload chan bool
+
 type Payload struct {
-	Action string `json:"action" binding:"required"`
+	Action string `json:"action" binding:"required,oneof=download read"`
 }
 
 func Router(debug bool) *gin.Engine {
@@ -24,6 +26,7 @@ func Router(debug bool) *gin.Engine {
 	v1.GET("/ping", Ping)
 	v1.POST("/manage_file", ManageFile)
 
+	BlockDownload = make(chan bool, 1)
 	return router
 }
 
@@ -37,5 +40,23 @@ func ManageFile(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "failure", "err": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"status": "success"})
+	switch payload.Action {
+	case "download":
+		select {
+		case BlockDownload <- true:
+			err := downloadAction()
+			<-BlockDownload
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"status": "failure", "err": err.Error()})
+				return
+			}
+			c.JSON(http.StatusOK, gin.H{"status": "success", "action": "download"})
+
+		default:
+			c.JSON(http.StatusTooManyRequests, gin.H{"status": "failure", "err":"file download in progress"})
+		}
+	case "read":
+		// stub
+		c.JSON(http.StatusOK, gin.H{"status": "success", "action": "read"})
+	}
 }
