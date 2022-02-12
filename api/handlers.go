@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"os"
 	"net/http"
+	"os"
 )
 
 const (

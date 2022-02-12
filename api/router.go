@@ -54,13 +54,13 @@ func ManageFile(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{"status": "success", "action": "download"})
 
 		default:
-			c.JSON(http.StatusTooManyRequests, gin.H{"status": "failure", "err":"file download in progress"})
+			c.JSON(http.StatusTooManyRequests, gin.H{"status": "failure", "err": "file download in progress"})
 		}
 	case "read":
 		if assetExists() {
 			c.File(fmt.Sprintf("%s/%s", AssetDir, SampleFile))
 		} else {
-			c.JSON(http.StatusInternalServerError, gin.H{"status": "failure", "err":"file must be downloaded first"})
+			c.JSON(http.StatusInternalServerError, gin.H{"status": "failure", "err": "file must be downloaded first"})
 		}
 	}
 }
