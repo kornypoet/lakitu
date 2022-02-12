@@ -1,4 +1,5 @@
 APP_NAME=lakitu
+TOOLS = $(shell go list -f '{{range .Imports}}{{.}} {{end}}' tools.go)
 
 all: clean mac
 
@@ -17,3 +18,6 @@ clean:
 
 format:
 	go fmt ./...
+
+tools:
+	go install $(TOOLS)
