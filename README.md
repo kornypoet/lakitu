@@ -48,6 +48,12 @@ Build for linux
 make build
 ```
 
+Install tools
+
+```
+make tools
+```
+
 Run tests
 
 ```

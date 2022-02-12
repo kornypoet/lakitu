@@ -14,6 +14,10 @@ const (
 	SampleFile = "sample-data.txt"
 )
 
+func AssetFile() string {
+	return fmt.Sprintf("%s/%s", AssetDir, SampleFile)
+}
+
 func downloadAction() (err error) {
 	if !assetExists() {
 		err = downloadFile()
@@ -23,7 +27,7 @@ func downloadAction() (err error) {
 }
 
 func assetExists() bool {
-	if _, err := os.Stat(fmt.Sprintf("%s/%s", AssetDir, SampleFile)); os.IsNotExist(err) {
+	if _, err := os.Stat(AssetFile()); os.IsNotExist(err) {
 		return false
 	} else {
 		return true
@@ -38,7 +42,7 @@ func downloadFile() (err error) {
 	defer resp.Body.Close()
 
 	os.MkdirAll(AssetDir, 0700)
-	out, err := os.OpenFile(fmt.Sprintf("%s/%s", AssetDir, SampleFile), os.O_RDWR|os.O_CREATE|os.O_EXCL, 0666)
+	out, err := os.OpenFile(AssetFile(), os.O_RDWR|os.O_CREATE|os.O_EXCL, 0666)
 	if err != nil {
 		return
 	}
