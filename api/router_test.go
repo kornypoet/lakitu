@@ -110,6 +110,21 @@ var _ = Describe("Router", func() {
 		})
 	})
 
+	When(`POST /v1/manage_file {"action":"download"}`, func() {
+		It("returns 500", func() {
+			w := httptest.NewRecorder()
+			body := bytes.NewBuffer([]byte(`{"action":"download"}`))
+			req, _ := http.NewRequest("POST", "/v1/manage_file", body)
+			api.BlockDownload <- true
+			router.ServeHTTP(w, req)
+			<-api.BlockDownload
+
+			Expect(w.Code).To(Equal(429))
+			res := `{"status":"failure","err":"file download in progress"}`
+			Expect(w.Body.String()).To(MatchJSON(res))
+		})
+	})
+
 	When(`POST /v1/manage_file {"action":"read"}`, func() {
 		It("returns 500", func() {
 			w := httptest.NewRecorder()
