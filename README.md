@@ -34,6 +34,12 @@ make
 bin/darwin_amd64/lakitu -d
 ```
 
+Build and run with docker compose
+
+```
+docker compose up
+```
+
 ## Development
 
 Build for mac
@@ -66,7 +72,14 @@ Format code
 make format
 ```
 
+Build docker container
+
+```
+make docker
+```
+
 ## Requirements
 
 * golang 1.17
 * make
+* docker
