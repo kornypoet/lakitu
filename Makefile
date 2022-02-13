@@ -1,5 +1,6 @@
 APP_NAME=lakitu
 TOOLS = $(shell go list -f '{{range .Imports}}{{.}} {{end}}' tools.go)
+VERSION = $(shell cat VERSION)
 
 all: clean mac
 
@@ -23,4 +24,4 @@ tools:
 	go install $(TOOLS)
 
 docker:
-	docker build . -t $(APP_NAME)
+	docker build . -t $(APP_NAME):$(VERSION)
