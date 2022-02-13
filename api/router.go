@@ -8,6 +8,7 @@ import (
 )
 
 var BlockDownload chan bool
+var Version string
 
 type Payload struct {
 	Action string `json:"action" binding:"required,oneof=download read"`
@@ -30,15 +31,15 @@ func Router(debug bool, logging bool) (router *gin.Engine) {
 	router.HandleMethodNotAllowed = true
 	v1 := router.Group("/v1")
 
-	v1.GET("/ping", Ping)
+	v1.GET("/version", VersionCheck)
 	v1.POST("/manage_file", ManageFile)
 
 	BlockDownload = make(chan bool, 1)
 	return
 }
 
-func Ping(c *gin.Context) {
-	c.String(http.StatusOK, "pong")
+func VersionCheck(c *gin.Context) {
+	c.String(http.StatusOK, Version)
 }
 
 func ManageFile(c *gin.Context) {

@@ -21,16 +21,17 @@ var _ = Describe("Router", func() {
 		gin.SetMode(gin.TestMode)
 		router = api.Router(true, false)
 		api.AssetDir = GinkgoT().TempDir()
+		api.Version = "test"
 	})
 
-	When("GET /v1/ping", func() {
+	When("GET /v1/version", func() {
 		It("returns 200", func() {
 			w := httptest.NewRecorder()
-			req, _ := http.NewRequest("GET", "/v1/ping", nil)
+			req, _ := http.NewRequest("GET", "/v1/version", nil)
 			router.ServeHTTP(w, req)
 
 			Expect(w.Code).To(Equal(200))
-			Expect(w.Body.String()).To(Equal("pong"))
+			Expect(w.Body.String()).To(Equal("test"))
 		})
 	})
 
