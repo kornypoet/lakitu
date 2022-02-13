@@ -10,11 +10,11 @@ import (
 )
 
 var (
-	Assets string
-	Bind string
-	Debug bool
+	Assets  string
+	Bind    string
+	Debug   bool
 	Logging bool
-	Port string
+	Port    string
 )
 
 var rootCmd = &cobra.Command{
