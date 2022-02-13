@@ -3,11 +3,13 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/kornypoet/lakitu/api"
 	"github.com/spf13/cobra"
 )
 
+var Assets string
 var Bind string
 var Debug bool
 var Logging bool
@@ -26,6 +28,7 @@ func Execute() {
 }
 
 func init() {
+	rootCmd.Flags().StringVarP(&Assets, "assets", "a", "", "Directory to store assets in")
 	rootCmd.Flags().StringVarP(&Bind, "bind", "b", "localhost", "Address to bind server to")
 	rootCmd.Flags().BoolVarP(&Debug, "debug", "d", false, "Enable debug mode")
 	rootCmd.Flags().BoolVarP(&Logging, "logging", "l", true, "Enable request logs")
@@ -33,6 +36,12 @@ func init() {
 }
 
 func run(cmd *cobra.Command, args []string) {
+	if Assets == "" {
+		wd, _ := os.Getwd()
+		Assets = filepath.Join(wd, "assets")
+	}
+	os.MkdirAll(Assets, 0700)
+	api.AssetDir = Assets
 	router := api.Router(Debug, Logging)
 	address := fmt.Sprintf("%s:%s", Bind, Port)
 	router.Run(address)

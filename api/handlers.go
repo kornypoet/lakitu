@@ -8,8 +8,9 @@ import (
 	"os"
 )
 
+var AssetDir string
+
 const (
-	AssetDir   = "assets"
 	RemoteURL  = "https://www.learningcontainer.com/wp-content/uploads/2020/04/sample-text-file.txt"
 	SampleFile = "sample-data.txt"
 )
@@ -41,7 +42,6 @@ func downloadFile() (err error) {
 	}
 	defer resp.Body.Close()
 
-	os.MkdirAll(AssetDir, 0700)
 	out, err := os.OpenFile(AssetFile(), os.O_RDWR|os.O_CREATE|os.O_EXCL, 0666)
 	if err != nil {
 		return

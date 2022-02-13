@@ -1,0 +1,8 @@
+version: "3"
+services:
+  lakitu:
+    build: .
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./assets:/data

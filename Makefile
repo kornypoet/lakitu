@@ -21,3 +21,6 @@ format:
 
 tools:
 	go install $(TOOLS)
+
+docker:
+	docker build . -t $(APP_NAME)
