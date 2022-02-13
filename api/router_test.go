@@ -20,7 +20,7 @@ var _ = Describe("Router", func() {
 	BeforeEach(func() {
 		gin.SetMode(gin.TestMode)
 		router = api.Router(true, false)
-		_ = os.Remove(api.AssetFile())
+		api.AssetDir = GinkgoT().TempDir()
 	})
 
 	When("GET /v1/ping", func() {
