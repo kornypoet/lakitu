@@ -5,8 +5,9 @@ COPY . ./
 RUN make clean
 RUN make build
 
-FROM golang:1.17
+FROM golang:1.17-alpine
 
+RUN apk add --no-cache libc6-compat
 RUN mkdir -p /opt/lakitu
 COPY --from=build /build/bin/linux_amd64/lakitu /opt/lakitu/lakitu
 
