@@ -1,0 +1,28 @@
+name: ci
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        go-version: [ 1.17x ]
+        os: [ ubuntu-latest, macos-latest ]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Install
+      uses: actions/setup-go@v2
+      with:
+        go-version: ${{ matrix.go-version }}
+
+    - name: Format
+      run: if [ "$(make format | wc -l)" -gt 0 ]; then exit 1; fi
+
+    - name: Test
+      run: make test
