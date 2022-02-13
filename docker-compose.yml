@@ -2,6 +2,7 @@ version: "3"
 services:
   lakitu:
     build: .
+    image: lakitu
     ports:
       - "9090:9090"
     volumes:
