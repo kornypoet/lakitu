@@ -3,6 +3,7 @@ name: ci
 on:
   pull_request:
     branches: [ main ]
+    paths: [ '**.go', Makefile, go.mod, go.sum ]
 
 jobs:
   test:
