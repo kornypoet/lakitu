@@ -9,8 +9,8 @@ Lakitu is a simple HTTP server
 Routes
 
 ```
-GET /v1/ping
--> 200 pong
+GET /v1/version
+-> 200 vX.X.X
 POST /v1/manage_file {"action":"download"}
 # first api call
 -> 200 {"action":"download","status":"success"}
@@ -38,6 +38,12 @@ Build and run with docker compose
 
 ```
 docker compose up
+```
+
+Check Version
+
+```
+bin/darwin_amd64/lakitu -v
 ```
 
 ## Development

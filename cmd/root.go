@@ -9,19 +9,23 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var Assets string
-var Bind string
-var Debug bool
-var Logging bool
-var Port string
+var (
+	Assets string
+	Bind string
+	Debug bool
+	Logging bool
+	Port string
+)
 
 var rootCmd = &cobra.Command{
-	Use:   "lakitu",
-	Short: "Simple HTTP Server",
-	Run:   run,
+	Use:     "lakitu",
+	Short:   "Simple HTTP Server",
+	Run:     run,
+	Version: "embedded",
 }
 
 func Execute() {
+	rootCmd.Version = api.Version
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
