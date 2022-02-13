@@ -17,7 +17,7 @@ clean:
 	rm -rf bin/*
 
 format:
-	go fmt ./...
+	@gofmt -s -l .
 
 tools:
 	go install $(TOOLS)
