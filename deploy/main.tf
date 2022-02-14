@@ -51,7 +51,7 @@ data "aws_iam_policy_document" "allow-push-to-ecr" {
   }
 
   statement {
-    effect  = "Allow"
+    effect = "Allow"
     actions = [
       "ecr:BatchCheckLayerAvailability",
       "ecr:CompleteLayerUpload",
