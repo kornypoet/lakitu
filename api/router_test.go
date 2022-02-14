@@ -18,8 +18,7 @@ var _ = Describe("Router", func() {
 	var router *gin.Engine
 
 	BeforeEach(func() {
-		gin.SetMode(gin.TestMode)
-		router = api.Router(true, false)
+		router = api.Router(false)
 		api.AssetDir = GinkgoT().TempDir()
 		api.Version = "test"
 	})

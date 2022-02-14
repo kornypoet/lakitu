@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/kornypoet/lakitu/api"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -40,13 +41,20 @@ func init() {
 }
 
 func run(cmd *cobra.Command, args []string) {
+	if Debug {
+		log.SetLevel(log.DebugLevel)
+	}
+	log.Info("Running lakitu")
 	if Assets == "" {
 		wd, _ := os.Getwd()
 		Assets = filepath.Join(wd, "assets")
+		log.Debug("asset dir unspecified")
 	}
+	log.Debugf("creating asset dir at: %s", Assets)
 	os.MkdirAll(Assets, 0700)
 	api.AssetDir = Assets
-	router := api.Router(Debug, Logging)
+	router := api.Router(Logging)
 	address := fmt.Sprintf("%s:%s", Bind, Port)
+	log.Infof("Starting server at %s", address)
 	router.Run(address)
 }
