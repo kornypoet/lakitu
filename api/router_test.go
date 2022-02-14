@@ -97,14 +97,14 @@ var _ = Describe("Router", func() {
 	})
 
 	When(`POST /v1/manage_file {"action":"download"}`, func() {
-		It("returns 500", func() {
+		It("returns 409", func() {
 			_, _ = os.Create(api.AssetFile())
 			w := httptest.NewRecorder()
 			body := bytes.NewBuffer([]byte(`{"action":"download"}`))
 			req, _ := http.NewRequest("POST", "/v1/manage_file", body)
 			router.ServeHTTP(w, req)
 
-			Expect(w.Code).To(Equal(500))
+			Expect(w.Code).To(Equal(409))
 			res := `{"status":"failure","err":"file already downloaded"}`
 			Expect(w.Body.String()).To(MatchJSON(res))
 		})
@@ -126,13 +126,13 @@ var _ = Describe("Router", func() {
 	})
 
 	When(`POST /v1/manage_file {"action":"read"}`, func() {
-		It("returns 500", func() {
+		It("returns 404", func() {
 			w := httptest.NewRecorder()
 			body := bytes.NewBuffer([]byte(`{"action":"read"}`))
 			req, _ := http.NewRequest("POST", "/v1/manage_file", body)
 			router.ServeHTTP(w, req)
 
-			Expect(w.Code).To(Equal(500))
+			Expect(w.Code).To(Equal(404))
 			res := `{"status":"failure","err":"file must be downloaded first"}`
 			Expect(w.Body.String()).To(MatchJSON(res))
 		})

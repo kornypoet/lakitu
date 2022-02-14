@@ -75,7 +75,7 @@ func ManageFile(c *gin.Context) {
 	switch payload.Action {
 	case "download":
 		if assetExists() {
-			c.JSON(http.StatusInternalServerError, gin.H{"status": "failure", "err": "file already downloaded"})
+			c.JSON(http.StatusConflict, gin.H{"status": "failure", "err": "file already downloaded"})
 			return
 		}
 		select {
@@ -94,7 +94,7 @@ func ManageFile(c *gin.Context) {
 		if assetExists() {
 			c.File(fmt.Sprintf("%s/%s", AssetDir, SampleFile))
 		} else {
-			c.JSON(http.StatusInternalServerError, gin.H{"status": "failure", "err": "file must be downloaded first"})
+			c.JSON(http.StatusNotFound, gin.H{"status": "failure", "err": "file must be downloaded first"})
 		}
 	}
 }
